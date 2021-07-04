@@ -13,14 +13,7 @@ use yii\widgets\ActiveField;
 <div class="booking-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
-    <?php if (Yii::$app->user->isGuest){
-        echo $form->field($model, 'customer_name')->textInput().
-            $form->field($model, 'customer_email')->textInput();
-    } ?>
-
-    <?= $form->field($model, 'booking')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Places::find()->all(), 'place_id', 'place_name','place_category' )); ?>
-
+    <!-- формы для даты -->
     <?php
     if($model->arrival_date) {
         $model->arrival_date = date("Y-m-d H:i", (integer) $model->arrival_date);
@@ -32,10 +25,10 @@ use yii\widgets\ActiveField;
         'convertFormat' => true,
         'value'=> date("Y-m-d h:i",(integer) $model->arrival_date),
         'pluginOptions' => [
-            'format' => 'yyyy-MM-dd hh:i',
+            'format' => 'yyyy-MM-dd hh:i', // формат времени
             'autoclose'=>true,
             'weekStart'=>1, //неделя начинается с понедельника
-            'startDate' => '01.05.2015 00:00', //самая ранняя возможная дата
+            'startDate' => '2015.01.05 00:00', //самая ранняя возможная дата
             'todayBtn'=>true, //снизу кнопка "сегодня"
         ]
     ]); ?>
@@ -51,10 +44,10 @@ use yii\widgets\ActiveField;
         'convertFormat' => true,
         'value'=> date("Y-m-d h:i",(integer) $model->departure_date),
         'pluginOptions' => [
-            'format' => 'yyyy-MM-dd hh:i',
+            'format' => 'yyyy-MM-dd hh:i', // формат времени
             'autoclose'=>true,
             'weekStart'=>1, //неделя начинается с понедельника
-            'startDate' => '01.05.2015 00:00', //самая ранняя возможная дата
+            'startDate' => '2015.01.05 00:00', //самая ранняя возможная дата
             'todayBtn'=>true, //снизу кнопка "сегодня"
         ]
     ]); ?>

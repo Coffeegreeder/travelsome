@@ -17,6 +17,7 @@ class User extends ActiveRecord implements IdentityInterface
         return 'user';
     }
 
+
     /**
      * Finds an identity by the given ID.
      *

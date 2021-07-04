@@ -30,10 +30,10 @@ class Places extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['place_name', 'place_category'], 'required'],
-            [['place_status', 'place_category'], 'integer'],
-            [['place_name'], 'string', 'max' => 255],
-            [['place_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserOrders::className(), 'targetAttribute' => ['place_id' => 'booking']],
+            [['place_category'], 'required'],
+            [['place_status', 'place_category', 'place_id'], 'integer'],
+            [['arrival_date', 'departure_date', 'place_id'], 'safe'],
+            [['place_name', 'customer_name', 'customer_email'], 'string', 'max' => 255],
         ];
     }
 
@@ -43,21 +43,13 @@ class Places extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'place_id' => 'Place ID',
-            'place_name' => 'Place Name',
-            'place_status' => 'Place Status',
-            'place_category' => 'Place Category',
+            'place_id' => 'Номер брони',
+            'place_name' => 'Имя',
+            'place_email' => 'Email',
+            'place_status' => 'Статус',
+            'place_category' => 'Категория',
+            'arrival_date' => 'Время прибытия',
+            'departure_date' => 'Время отъезда',
         ];
-    }
-
-
-    /**
-     * Gets query for [[Place]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPlace()
-    {
-        return $this->hasOne(UserOrders::className(), ['booking' => 'place_id']);
     }
 }

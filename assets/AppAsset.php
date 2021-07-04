@@ -22,18 +22,10 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/master.css',
-        'css/carousel.css',
         'css/ie10-viewport-bug-workaround.css',
         'css/bootstrap.min.css',
     ];
-    public $js = [
-        'js/bootstrap.min.js',
-        'js/holder.min.js',
-        'js/ie8-responsive-file-warning.js',
-        'js/ie10-viewport-bug-workaround.js',
-        'js/jquery.min.js',
-        'js/ie-emulation-modes-warning.js',
-    ];
+    public $js = [];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',

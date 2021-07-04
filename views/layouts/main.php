@@ -14,20 +14,22 @@ AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+<html lang="ru">
 
-<base href="/web/">
-<div class="wrap">
+<head>
+  <meta charset="<?= Yii::$app->charset ?>">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?php $this->registerCsrfMetaTags() ?>
+  <title><?= Html::encode($this->title) ?></title>
+  <?php $this->head() ?>
+</head>
+
+<body>
+  <?php $this->beginBody() ?>
+
+  <base href="/web/">
+  <div class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => 'TravelSome',
@@ -50,7 +52,8 @@ AppAsset::register($this);
             ) : (
                 '<li>
                 <a href="index?r=site/orders">Ваши заказы ('. Yii::$app->user->identity->username .')</a>
-                </li><li>'
+                </li>
+                <li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
                     'Выход ',
@@ -64,18 +67,19 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-        <?= $content ?>
-</div>
+    <?= $content ?>
+  </div>
 
-<!-- FOOTER -->
-<hr class="featurette-divider">
+  <!-- FOOTER -->
+  <hr class="featurette-divider">
 
-<footer class="container">
+  <footer class="container">
     <p class="pull-right"><a href="#">Back to top</a></p>
     <p>&copy; 2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
+  </footer>
 
-<?php $this->endBody() ?>
+  <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>

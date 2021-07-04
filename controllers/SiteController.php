@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Places;
+use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
@@ -58,6 +59,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $places = Places::find()->where(['place_status' => 0])->all();
+
         $counter = [
             Places::find()->where(['place_status' => 0])->andWhere(['place_category' => 'Одноместный'])->count(),
             Places::find()->where(['place_status' => 0])->andWhere(['place_category' => 'Двуместный'])->count(),
@@ -71,46 +73,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single UserOrders model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new UserOrders model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new UserOrders();
-
-        if($model->customer_name = Yii::$app->user->identity->username && $model->customer_email = Yii::$app->user->identity->email){
-            $dataProvider = 1;
-        }
-
-
-        //$model->place_status = 1;
-        if($model->departure_date >= date('Y-m-d h:i:s')){
-
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
-        }
-//        var_dump($model);
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Updates an existing UserOrders model.
@@ -119,12 +81,20 @@ class SiteController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id) // Экшен на обновление данных брони
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
+        if(Yii::$app->user->isGuest){
+            $this->redirect(['register']);
+        }
+
+        $model->customer_name = Yii::$app->user->identity->username;
+        $model->customer_email = Yii::$app->user->identity->email;
+        $model->place_status = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            return $this->redirect(['orders']);
         }
 
         return $this->render('update', [
@@ -132,8 +102,8 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionOrders(){
-        $orders = UserOrders::find()->where(['customer_name' => Yii::$app->user->identity->username])->all();
+    public function actionOrders(){ // Экшен на вывод брони
+        $orders = Places::find()->where(['customer_name' => Yii::$app->user->identity->username])->all(); // (записи, у которых имя бронирующего совпадает с текущим пользователем)
 
         return $this->render('user_orders', [
             'orders' => $orders,
@@ -147,19 +117,30 @@ class SiteController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    // отмена брони
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model =  $this->findModel($id);
+
+        $model->customer_name = null;
+        $model->customer_email = null;
+        $model->arrival_date = null;
+        $model->departure_date = null;
+        $model->place_status = 0;
+
+        $model->load(Yii::$app->request->post());
+        $model->save(false);
 
         return $this->redirect(['index']);
     }
 
+    // Регистрация
     public function actionRegister()
     {
-
        $model = new RegisterForm();
        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-           return $this->render('index');
+           return $this->redirect(['index']);
        }
 
        return $this->render('register', [
@@ -170,12 +151,12 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect('index?r=site/index');
+            return $this->redirect(['index']);
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect('index?r=site/index');
+            return $this->redirect('index');
         }
 
         $model->password = '';
@@ -200,7 +181,7 @@ class SiteController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = UserOrders::findOne($id)) !== null) {
+        if (($model = Places::findOne($id)) !== null) {
             return $model;
         }
 

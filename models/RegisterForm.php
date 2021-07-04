@@ -18,9 +18,19 @@ class RegisterForm extends Model
             // обязательные поля
             [['username', 'password', 'confirmPassword', 'email'], 'required'],
             // обязательное обозначение для эл. почты
-            ['email', 'email'],
+            [['email'], 'email'],
             // Правило на повтор пароля
             ['confirmPassword', 'compare', 'compareAttribute' => 'password'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Имя',
+            'email' => 'Email',
+            'password' => 'Пароль',
+            'confirmPassword' => 'подтверждение пароля',
         ];
     }
 
