@@ -39,7 +39,7 @@ $this->title = 'Главная | TravelSome';
       <?php foreach($places as $place)
             echo
                 '<div class="col-lg-5 card-place text-center '.$place->place_category.'">
-                    '.$place->place_name.'
+                    <p>'.$place->place_name.'</p>
                     <img class="card-place__img" src="pics/default.jpg" alt="">
                     <h4 class="card-place__category"> <b>Категория: </b> '.$place->place_category.' </h4>
                     '.  Html::a('Забронировать', ['update', 'id' => $place->place_id], ['class' => 'btn btn-success']). '
