@@ -16,8 +16,13 @@ $this->title = 'Главная | TravelSome';
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-3 col-sm-offset-1">
-      <div class="sidebar-module">
+    <div class="col-sm-3 col-sm-offset-1"> <!-- сайдбар -->
+        <h3 class="text-center">меню</h3>
+        <hr>
+        <div class="sidebar-module"> <!-- поисковая система -->
+            <input type="text" id="search" placeholder="Поиск...">
+        </div> <!-- ./поисковая система -->
+        <div class="sidebar-module"> <!-- фильтр категорий -->
         <h4>Категории</h4>
         <ol class="list-unstyled">
           <li class="filter" data-f="all">Все категории</li>
@@ -26,21 +31,25 @@ $this->title = 'Главная | TravelSome';
           <li class="filter" data-f="Люкс">Люкс (<?= $counter[2] ?>)</li>
           <li class="filter" data-f="Де-Люкс">Де-Люкc (<?= $counter[3] ?>)</li>
         </ol>
-      </div>
-    </div><!-- /.sidebar -->
+      </div><!-- ./фильтр категорий -->
+    </div><!-- /.сайдбар -->
 
     <div class="col-sm-8">
+        <section class="content search"> <!-- секция с выводом карточек -->
       <?php foreach($places as $place)
-            echo '<div class="col-lg-5 card-place '.$place->place_category.'">
-            <img class="card-place__img" src="pics/default.jpg" alt="">
-            <h4 class="card-place__category"> <b>Категория: </b> '.$place->place_category.' </h4>
-            <h4 class="card-place__place"> '.$place->place_name.' </h4>
-            '.  Html::a('Забронировать', ['update', 'id' => $place->place_id], ['class' => 'btn btn-success']). '
-        </div>';
+            echo
+                '<div class="col-lg-5 card-place text-center '.$place->place_category.'">
+                    '.$place->place_name.'
+                    <img class="card-place__img" src="pics/default.jpg" alt="">
+                    <h4 class="card-place__category"> <b>Категория: </b> '.$place->place_category.' </h4>
+                    '.  Html::a('Забронировать', ['update', 'id' => $place->place_id], ['class' => 'btn btn-success']). '
+                </div>';
             ?>
+        </section><!-- ./секция с выводом карточек -->
     </div><!-- /.main -->
   </div>
 </div><!-- /.container -->
 
 <!-- scripts -->
 <script src="/web/js/filter.js"></script>
+<script src="/web/js/search.js"></script>
